@@ -6,6 +6,8 @@ FROM alpine:edge
 ARG HELM_VERSION=2.14.3
 ARG KUBECTL_VERSION=1.13.10
 ARG AWS_IAM_AUTH_VERSION=0.4.0
+ARG KUSTOMIZE_VERSION=3.2.3
+
 
 # Install helm (latest release)
 # ENV BASE_URL="https://storage.googleapis.com/kubernetes-helm"
@@ -24,6 +26,11 @@ RUN apk add --update --no-cache curl && \
     curl -LO https://storage.googleapis.com/kubernetes-release/release/v${KUBECTL_VERSION}/bin/linux/amd64/kubectl && \
     mv kubectl /usr/bin/kubectl && \
     chmod +x /usr/bin/kubectl
+
+# Install kustomize 
+RUN curl -LO https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize/v${KUSTOMIZE_VERSION}/kustomize_kustomize.v${KUSTOMIZE_VERSION}_linux_amd64 && \
+    mv kustomize_kustomize.v${KUSTOMIZE_VERSION}_linux_amd64 /usr/bin/kustomize && \
+    chmod +x /usr/bin/kustomize
 
 # Install aws-iam-authenticator (latest version)
 RUN curl -LO https://github.com/kubernetes-sigs/aws-iam-authenticator/releases/download/v${AWS_IAM_AUTH_VERSION}/aws-iam-authenticator_0.4.0_linux_amd64 && \
